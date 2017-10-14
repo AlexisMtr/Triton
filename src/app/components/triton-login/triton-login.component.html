@@ -1,21 +1,19 @@
 <div class="login-box">
   <div class="login-logo">
     <a href="../../index2.html">
-
-      <img width="300" src="../assets/img/triton-logo.jpg">
+      <div><img width="175" src="../assets/img/triton-logo.jpg"></div>
       <b>Triton</b>
     </a>
   </div>
-  <!-- /.login-logo -->
   <div class="login-box-body">
 
-    <form action="../../index2.html" method="post">
+    <form (ngSubmit)="connect()" #userForm="ngForm">
       <div class="form-group has-feedback">
-        <input class="form-control" type="email" placeholder="Identifiant">
+        <input class="form-control" type="email" placeholder="Identifiant" [(ngModel)]="user.login" name="login" required>
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input class="form-control" type="password" placeholder="Mot de passe">
+        <input class="form-control" type="password" placeholder="Mot de passe" [(ngModel)]="user.password" name="pwd" required>
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
@@ -26,14 +24,11 @@
             </label>
           </div>
         </div> -->
-        <!-- /.col -->
         <div class="col-xs-12">
-          <button class="btn btn-primary btn-block btn-flat" type="submit">Se connecter</button>
+          <button class="btn btn-primary btn-block btn-flat" type="submit" [disabled]="!userForm.valid">Se connecter</button>
         </div>
-        <!-- /.col -->
       </div>
     </form>
 
   </div>
-  <!-- /.login-box-body -->
 </div>

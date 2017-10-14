@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Http } from "@angular/http";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import { UserDataClaim } from '../interfaces/user-data-claim';
+import { Token } from '../interfaces/token';
 
 @Injectable()
 export class PoseidonApiService {
@@ -10,10 +12,10 @@ export class PoseidonApiService {
 
   private baseUrl : string = "http://localhost:64705/api";
 
-  connect(login: string, password: string): Observable<Response> {
+  connect(login: string, password: string): Observable<Token> {
     let endPoint = this.baseUrl + "/token";
     return this.http.get(endPoint)
-      .map(response => response.json());
+      .map(response => response.json() as Token);
   }
 
 }

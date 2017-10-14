@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { PoseidonApiService } from '../../services/poseidon-api.service';
+
+class User {
+  login     : string;
+  password  : string;
+}
 
 @Component({
   selector: 'app-triton-login',
@@ -7,9 +13,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TritonLoginComponent implements OnInit {
 
-  constructor() { }
+  @Input() user : User = new User();
+
+  constructor(private poseidon: PoseidonApiService) { }
 
   ngOnInit() {
+  }
+
+  connect() {
+    console.log("try connect", this.user.login, this.user.password);
+    this.poseidon.connect(this.user.login, this.user.password)
+      .subscribe(token => {
+        console.log(token.Token);
+      }, error => {
+        console.log("Error", error); 
+      });
   }
 
 }
