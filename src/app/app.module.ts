@@ -6,6 +6,7 @@ import { TritonLoginComponent } from './components/triton-login/triton-login.com
 import { PoseidonApiService } from './services/poseidon-api.service';
 import { HttpModule } from '@angular/http';
 import { FormsModule } from "@angular/forms";
+import { ChartsModule } from 'ng2-charts';
 import { TritonHeaderComponent } from './components/triton-header/triton-header.component';
 import { TritonAsideComponent } from './components/triton-aside/triton-aside.component';
 import { TritonContentComponent } from './components/triton-content/triton-content.component';
@@ -21,7 +22,8 @@ import { TritonContentComponent } from './components/triton-content/triton-conte
   imports: [
     BrowserModule,
     HttpModule,
-    FormsModule
+    FormsModule,
+    ChartsModule
   ],
   providers: [
     PoseidonApiService
