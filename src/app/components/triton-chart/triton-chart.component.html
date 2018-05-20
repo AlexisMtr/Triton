@@ -1,0 +1,104 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Température</h3>
+                    </div>
+                    <div class="box-body">
+                        test
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="box">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Température</h3>
+                    </div>
+                    <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                        <p class="text-center">
+                            <strong></strong>
+                        </p>
+
+                        <div class="chart">
+                            <canvas
+                            baseChart
+                            [chartType]="'line'"
+                            [datasets]="tempDatas"
+                            [labels]="tempLabel"
+                            [options]="chartOptions"
+                            [legend]="true">
+                        </canvas>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="box-footer">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-6">
+                        <div class="description-block border-right">
+                            <span class="description-text">Température minimale</span>
+                            <h5 class="description-header">{{minTemp}} °C</h5>
+                        </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-6">
+                        <div class="description-block border-right">
+                            <span class="description-text">Température maximale</span>
+                            <h5 class="description-header">{{maxTemp}} °C</h5>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <div class=" col-md-6">
+                <div class="box">
+                    <div class="box-header with-border">
+                    <h3 class="box-title">Niveau d'eau</h3>
+                    </div>
+                    <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                        <p class="text-center">
+                            <strong></strong>
+                        </p>
+
+                        <div class="chart">
+                            <canvas
+                            baseChart
+                            [chartType]="'line'"
+                            [datasets]="levelDatas"
+                            [labels]="levelLabel"
+                            [options]="chartOptions"
+                            [legend]="true">
+                        </canvas>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="box-footer">
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-6">
+                        <div class="description-block border-right">
+                            <span class="description-text">Niveau minimal</span>
+                            <h5 class="description-header">{{minLevel}} m<sup>3</sup></h5>
+                        </div>
+                        </div>
+                        <div class="col-sm-6 col-xs-6">
+                        <div class="description-block border-right">
+                            <span class="description-text">Niveau maximal</span>
+                            <h5 class="description-header">{{maxLevel}} m<sup>3</sup></h5>
+                        </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

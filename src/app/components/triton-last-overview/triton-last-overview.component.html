@@ -1,0 +1,62 @@
+<div class="row">
+    <div class="col-md-3 col-sm-6 col-xs-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-aqua">
+          <i class="ion ion-waterdrop"></i>
+        </span>
+
+        <div class="info-box-content">
+          <span class="info-box-text">Eau</span>
+          <span class="info-box-number" *ngIf="this.waterTemperature != null">{{waterTemperature}} °C</span>
+          <span class="info-box-text" *ngIf="this.waterTemperature == null">Indisponible</span>
+          <span class="info-box-number" *ngIf="this.waterPh != null">ph {{waterPh}}</span>
+          <span class="info-box-text" *ngIf="this.waterPh == null">Indisponible</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-red">
+          <i class="ion ion-cube"></i>
+        </span>
+
+        <div class="info-box-content">
+          <span class="info-box-text">Volume</span>
+          <span class="info-box-number" *ngIf="this.poolVolume != null">{{poolVolume}} m
+            <sup>3</sup>
+          </span>
+          <span class="info-box-text" *ngIf="this.poolVolume == null">Indisponible</span>
+        </div>
+      </div>
+    </div>
+    <div class="clearfix visible-sm-block"></div>
+
+    <div class="col-md-3 col-sm-6 col-xs-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-green">
+          <i class="ion ion-ios-cloud"></i>
+        </span>
+
+        <div class="info-box-content">
+          <span class="info-box-text">Météo</span>
+          <span class="info-box-number" *ngIf="this.weatherCondition != null">{{weatherCondition}}</span>
+          <span class="info-box-text" *ngIf="this.weatherCondition == null">Indisponible</span>
+          <span class="info-box-number" *ngIf="this.weatherTemperature != null">{{weatherTemperature}} °C</span>
+          <span class="info-box-text" *ngIf="this.weatherTemperature == null">Indisponible</span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-sm-6 col-xs-12">
+      <div class="info-box">
+        <span class="info-box-icon bg-yellow">
+          <i class="ion ion-battery-half"></i>
+        </span>
+
+        <div class="info-box-content">
+          <span class="info-box-text">Batterie</span>
+          <span class="info-box-number" *ngIf="this.batteryLevel != null">{{batteryLevel}}%</span>
+          <span class="info-box-text" *ngIf="this.batteryLevel == null">Indisponible</span>
+        </div>
+      </div>
+    </div>
+  </div>

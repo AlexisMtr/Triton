@@ -10,6 +10,9 @@ import { ChartsModule } from 'ng2-charts';
 import { TritonHeaderComponent } from './components/triton-header/triton-header.component';
 import { TritonAsideComponent } from './components/triton-aside/triton-aside.component';
 import { TritonContentComponent } from './components/triton-content/triton-content.component';
+import { TritonLastOverviewComponent } from './components/triton-last-overview/triton-last-overview.component';
+import { HttpClientModule } from '@angular/common/http';
+import { TritonChartComponent } from './components/triton-chart/triton-chart.component';
 
 @NgModule({
   declarations: [
@@ -17,11 +20,14 @@ import { TritonContentComponent } from './components/triton-content/triton-conte
     TritonLoginComponent,
     TritonHeaderComponent,
     TritonAsideComponent,
-    TritonContentComponent
+    TritonContentComponent,
+    TritonLastOverviewComponent,
+    TritonChartComponent
   ],
   imports: [
     BrowserModule,
     HttpModule,
+    HttpClientModule,
     FormsModule,
     ChartsModule
   ],

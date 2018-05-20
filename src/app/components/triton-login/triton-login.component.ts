@@ -25,11 +25,11 @@ export class TritonLoginComponent implements OnInit {
     {
         console.log("try connect", this.user.login, this.user.password);
         this.poseidon.Connect(this.user.login, this.user.password)
-        .subscribe(token => {
-        console.log(token.Token);
-        }, error => {
-        console.log("Error", error); 
-        });
+            .subscribe(token => {
+                console.log(token.Token);
+            }, error => {
+                console.log("Error", error); 
+            }); 
     }
 
 }
