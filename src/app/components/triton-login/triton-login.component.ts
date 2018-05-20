@@ -7,27 +7,29 @@ class User {
 }
 
 @Component({
-  selector: 'app-triton-login',
-  templateUrl: './triton-login.component.html',
-  styleUrls: ['./triton-login.component.css']
+    selector: 'app-triton-login',
+    templateUrl: './triton-login.component.html',
+    styleUrls: ['./triton-login.component.css']
 })
 export class TritonLoginComponent implements OnInit {
 
-  @Input() user : User = new User();
+    @Input() user : User = new User();
 
-  constructor(private poseidon: PoseidonApiService) { }
+    constructor(private poseidon: PoseidonApiService) { }
 
-  ngOnInit() {
-  }
+    ngOnInit()
+    {
+    }
 
-  connect() {
-    console.log("try connect", this.user.login, this.user.password);
-    this.poseidon.connect(this.user.login, this.user.password)
-      .subscribe(token => {
+    connect()
+    {
+        console.log("try connect", this.user.login, this.user.password);
+        this.poseidon.Connect(this.user.login, this.user.password)
+        .subscribe(token => {
         console.log(token.Token);
-      }, error => {
+        }, error => {
         console.log("Error", error); 
-      });
-  }
+        });
+    }
 
 }
