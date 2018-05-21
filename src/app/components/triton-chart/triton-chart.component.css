@@ -1,0 +1,14 @@
+.range-date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 0px;
+}
+.range-date > label {
+    margin-bottom: 0px;
+    margin-top: 5px;
+    width: 30px;
+}
+.range-date .input-group {
+    margin-top: 5px;
+}

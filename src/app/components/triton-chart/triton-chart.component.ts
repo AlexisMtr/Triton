@@ -41,6 +41,16 @@ export class TritonChartComponent implements OnInit, OnChanges
     ngOnInit(): void {
     }
     ngOnChanges(changes: SimpleChanges): void {
+        console.log(changes);
+        this.UpdateCharts();
+    }
+
+    public startDateChange(event: any, start: boolean) : void {
+        if(start)
+            this.start = new Date(event.target.value);
+        else
+            this.end = new Date(event.target.value);
+            
         this.UpdateCharts();
     }
 

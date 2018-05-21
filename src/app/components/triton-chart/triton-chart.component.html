@@ -2,12 +2,28 @@
     <div class="col-md-12">
         <div class="row">
             <div class="col-md-12">
-                <div class="box">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Température</h3>
-                    </div>
-                    <div class="box-body">
-                        test
+                <div class="form-group" style="display: flex; justify-content: center; flex-wrap: wrap">
+                    <div style="display: flex; justify-content: end" class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+                            <div class="range-date"><label>Du</label></div>
+                            <div class="form-group range-date">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control" type="date" value="{{start | date:'yyyy-MM-dd'}}" (change)="startDateChange($event, true)">
+                                </div>
+                            </div>
+                        </div>
+                    <div style="display: flex; justify-content: start" class="col-lg-3 col-md-4 col-sm-6 col-xs-6">
+                        <div class="range-date"><label>au</label></div>
+                        <div class="form-group range-date">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control" type="date" value="{{end | date:'yyyy-MM-dd'}}" (change)="startDateChange($event, false)">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
