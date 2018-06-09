@@ -1,0 +1,12 @@
+<div class="col-md-6" *ngFor="let pool of pools.elements">
+    <div class="info-box pool-item" (click)="poolSelected(pool.id)">
+        <span class="info-box-icon bg-aqua">
+            <i class="ion ion-waterdrop"></i>
+        </span>
+
+        <div class="info-box-content">
+            <span class="info-box-number">{{pool.name}}</span>
+            <span class="info-box-text">Indisponible</span>
+        </div>
+    </div>
+</div>

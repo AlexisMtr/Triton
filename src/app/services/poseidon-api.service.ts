@@ -1,17 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
-import { UserDataClaim } from '../interfaces/user-data-claim';
 import { Token } from '../interfaces/token';
 import { Telemetry, TelemetryType } from '../interfaces/telemetry';
-import { identifierModuleUrl } from '@angular/compiler';
 import { PaginatedElement } from '../interfaces/paginatedElement';
 import { Pool } from '../interfaces/pool';
+import { AppService } from './app.service';
 
 
-export enum Method 
-{
+export enum Method {
     Get,
     Post,
     Put,
@@ -19,71 +16,82 @@ export enum Method
 };
 
 @Injectable()
-export class PoseidonApiService
-{
-    token: string = "bearer eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJTWVNfQURNSU4iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9lbWFpbGFkZHJlc3MiOiJhLm1hcnRpbmllckBnbWFpbC5jb20iLCJleHAiOjE1NTgzMzkwOTZ9.MqQ58Cnhd8wZrqHTdwCmhZfJVBTeGK-IhLd6fSrRb_y4gzxSfAms33oHZCCzzRUZSPpHhRQTAL7WP2VkuYguZA";
-    constructor(private http: HttpClient) { }
+export class PoseidonApiService {
+
+    constructor(private http: HttpClient, private appService: AppService) { }
 
     private baseUrl : string = "http://localhost:64705/api";
 
-    public Connect(login: string, password: string): Observable<Token>
-    {
+    public connect(login: string, password: string): Observable<any> {
         let endPoint = this.baseUrl + "/accounts/login";
-        return Observable.create(observer =>
-        {
-            this.http.get(endPoint).subscribe(data => observer.next(data));
+        return Observable.create(observer => {
+            this.http.post(endPoint, {
+                email: login,
+                password: password
+            }).subscribe(data => {
+                let token = data as Token;
+                this.appService.saveToken(token.token)
+                observer.next(data)
+            });
         });
     }
 
-    public GetPool(poolId: number) : Observable<Pool>
-    {
+    public logout(): void {
+        this.appService.logout();
+    }
+
+    public getPools(): Observable<PaginatedElement<Pool>> {
+        let endPoint = this.baseUrl + '/pools';
+        return this.httpRequest(Method.Get, endPoint, null, null);
+    }
+
+    public getPool(poolId: number) : Observable<Pool> {
         let endPoint = this.baseUrl + '/pools/' + poolId;
-        return this.HttpRequest(Method.Get, endPoint, null, null, true);
+        return this.httpRequest(Method.Get, endPoint, null, null);
     }
 
-    public GetCurrentTelemetries(poolId: number): Observable<Telemetry[]>
-    {
+    public getCurrentTelemetries(poolId: number): Observable<Telemetry[]> {
         let endPoint = this.baseUrl + "/pools/" + poolId + "/telemetry/current";
-        return this.HttpRequest<Telemetry[]>(Method.Get, endPoint, null, null, true);
+        return this.httpRequest<Telemetry[]>(Method.Get, endPoint, null, null);
     }
 
-    public GetTelemetriesHistory(poolId: number, type?: TelemetryType, after?: Date, before?: Date): Observable<PaginatedElement<Telemetry>>
-    {
+    public getTelemetriesHistory(poolId: number, type?: TelemetryType, after?: Date, before?: Date): Observable<PaginatedElement<Telemetry>> {
         let endPoint = this.baseUrl + "/pools/" + poolId + "/telemetry/history";
         let params = new HttpParams();
 
-        if(type !== undefined)
+        if(type !== undefined) {
             params = params.append('type', type.toString());
-        if(before !== undefined)
+        }
+        if(before !== undefined) {
             params = params.append('before', before.toISOString());
-        if(after !== undefined)
+        }
+        if(after !== undefined) {
             params = params.append('after', after.toISOString());
+        }
 
-        return this.HttpRequest<PaginatedElement<Telemetry>>(Method.Get, endPoint, params, null, true);
+        return this.httpRequest<PaginatedElement<Telemetry>>(Method.Get, endPoint, params, null);
     }
 
-    private HttpRequest<T>(method: Method, endpoint: string, params?: HttpParams, body?: any, authorize: boolean = true) : Observable<T>
-    {
+    private httpRequest<T>(method: Method, endpoint: string, params?: HttpParams, body?: any) : Observable<T> {
+        
         let httpOptions = {
-            headers: new HttpHeaders({
-                'Authorization': this.token
-            }),
+            headers: null,
             params: params
         };
-        
-        if(!authorize) httpOptions.headers = null;
     
-        return Observable.create(observer =>
-        {
-            if(method == Method.Get)
+        return Observable.create(observer => {
+            if(method == Method.Get) {
                 this.http.get(endpoint, httpOptions).subscribe(data => observer.next(data));
-            else if(method == Method.Post)
+            }
+            else if(method == Method.Post) {
                 this.http.post(endpoint, body, httpOptions).subscribe(data => observer.next(data));
-            else if(method == Method.Put)
+            }
+            else if(method == Method.Put) {
                 this.http.put(endpoint, body, httpOptions).subscribe(data => observer.next(data));
-            else if(method == Method.Delete)
+            }
+            else if(method == Method.Delete) {
                 this.http.delete(endpoint, httpOptions).subscribe(data => observer.next(data));
+            }
         });
     }
-
 }

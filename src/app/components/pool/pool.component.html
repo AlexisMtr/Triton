@@ -1,0 +1,182 @@
+<div class="row overview">
+
+    <div class="col-md-6 col-lg-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-aqua">
+                <i class="ion ion-waterdrop"></i>
+            </span>
+    
+            <div class="info-box-content">
+                <span class="info-box-text">Eau</span>
+                <span class="info-box-number" *ngIf="this.waterTemperature != null">{{waterTemperature}} °C</span>
+                <span class="info-box-text" *ngIf="this.waterTemperature == null">Indisponible</span>
+                <span class="info-box-number" *ngIf="this.waterPh != null">ph {{waterPh}}</span>
+                <span class="info-box-text" *ngIf="this.waterPh == null">Indisponible</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-red">
+                <i class="ion ion-cube"></i>
+            </span>
+    
+            <div class="info-box-content">
+                <span class="info-box-text">Volume</span>
+                <span class="info-box-number" *ngIf="this.poolVolume != null">{{poolVolume}} m
+                  <sup>3</sup>
+                </span>
+                <span class="info-box-text" *ngIf="this.poolVolume == null">Indisponible</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-green">
+                <i class="ion ion-ios-cloud"></i>
+            </span>
+    
+            <div class="info-box-content">
+                <span class="info-box-text">Météo</span>
+                <span class="info-box-number" *ngIf="this.weatherCondition != null">{{weatherCondition}}</span>
+                <span class="info-box-text" *ngIf="this.weatherCondition == null">Indisponible</span>
+                <span class="info-box-number" *ngIf="this.weatherTemperature != null">{{weatherTemperature}} °C</span>
+                <span class="info-box-text" *ngIf="this.weatherTemperature == null">Indisponible</span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="info-box">
+            <span class="info-box-icon bg-yellow">
+                <i class="ion ion-battery-half"></i>
+            </span>
+    
+            <div class="info-box-content">
+                <span class="info-box-text">Battery</span>
+                <span class="info-box-number" *ngIf="this.batteryLevel != null">{{batteryLevel}}%</span>
+                <span class="info-box-text" *ngIf="this.batteryLevel == null">Indisponible</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="row">
+        <div class="col-md-12">
+                <div class="row range-chart">
+                    <div class="col-md-12">
+                        <div class="form-group" style="display: flex; justify-content: center; flex-wrap: wrap">
+                            <div style="display: flex; justify-content: end" class="col-lg-2 col-md-4 col-sm-6 col-xs-6">
+                                    <div class="range-date"><label>Du</label></div>
+                                    <div class="form-group range-date">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input class="form-control" type="date" value="{{start | date:'yyyy-MM-dd'}}" (change)="startDateChange($event, true)">
+                                        </div>
+                                    </div>
+                                </div>
+                            <div style="display: flex; justify-content: start" class="col-lg-2 col-md-4 col-sm-6 col-xs-6">
+                                <div class="range-date"><label>au</label></div>
+                                <div class="form-group range-date">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input class="form-control" type="date" value="{{end | date:'yyyy-MM-dd'}}" (change)="startDateChange($event, false)">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="box">
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Température</h3>
+                            </div>
+                            <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                <p class="text-center">
+                                    <strong></strong>
+                                </p>
+        
+                                <div class="chart">
+                                    <canvas
+                                    baseChart
+                                    [chartType]="'line'"
+                                    [datasets]="tempDatas"
+                                    [labels]="tempLabel"
+                                    [options]="chartOptions"
+                                    [legend]="true">
+                                </canvas>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="box-footer">
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-6">
+                                <div class="description-block border-right">
+                                    <span class="description-text">Température minimale</span>
+                                    <h5 class="description-header">{{minTemp}} °C</h5>
+                                </div>
+                                </div>
+                                <div class="col-sm-6 col-xs-6">
+                                <div class="description-block border-right">
+                                    <span class="description-text">Température maximale</span>
+                                    <h5 class="description-header">{{maxTemp}} °C</h5>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" col-md-6">
+                        <div class="box">
+                            <div class="box-header with-border">
+                            <h3 class="box-title">Niveau d'eau</h3>
+                            </div>
+                            <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                <p class="text-center">
+                                    <strong></strong>
+                                </p>
+        
+                                <div class="chart">
+                                    <canvas
+                                    baseChart
+                                    [chartType]="'line'"
+                                    [datasets]="levelDatas"
+                                    [labels]="levelLabel"
+                                    [options]="chartOptions"
+                                    [legend]="true">
+                                </canvas>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="box-footer">
+                            <div class="row">
+                                <div class="col-sm-6 col-xs-6">
+                                <div class="description-block border-right">
+                                    <span class="description-text">Niveau minimal</span>
+                                    <h5 class="description-header">{{minLevel}} m<sup>3</sup></h5>
+                                </div>
+                                </div>
+                                <div class="col-sm-6 col-xs-6">
+                                <div class="description-block border-right">
+                                    <span class="description-text">Niveau maximal</span>
+                                    <h5 class="description-header">{{maxLevel}} m<sup>3</sup></h5>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>
