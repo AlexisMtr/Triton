@@ -68,6 +68,7 @@ export class PoseidonApiService {
         if(after !== undefined) {
             params = params.append('after', after.toISOString());
         }
+        params = params.append('rowsPerPage', '999999');
 
         return this.httpRequest<PaginatedElement<Telemetry>>(Method.Get, endPoint, params, null);
     }

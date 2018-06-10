@@ -3,6 +3,9 @@ import { Pool } from "../../interfaces/pool";
 import { PoseidonApiService } from "../../services/poseidon-api.service";
 import { ActivatedRoute } from "@angular/router";
 import { TelemetryType } from "../../interfaces/telemetry";
+import { BrowserDynamicTestingModule } from "@angular/platform-browser-dynamic/testing";
+import { DatePipe } from "@angular/common";
+import { DateTimePipe } from "../../middleware/datetime.pipe";
 
 @Component({
     selector: "app-pool",
@@ -21,8 +24,8 @@ export class PoolComponent implements OnInit, OnChanges {
     private weatherTemperature: number;
     private batteryLevel: number;
 
-    private start: Date = new Date('2018-05-19');
-    private end: Date = new Date('2018-05-21');
+    private start: Date = new Date('2018-06-01');
+    private end: Date = new Date(Date.now());
 
     private tempDatas: any[] = [{ data: [] }];
     private tempLabel: string[] = [];
@@ -97,11 +100,12 @@ export class PoolComponent implements OnInit, OnChanges {
     }
 
     private updateCharts() : void {
+        let datePipe = new DateTimePipe();
         this.apiService.getTelemetriesHistory(this.poolId, TelemetryType.Temperature, this.start, this.end)
             .subscribe(data => {
                 let temperature = data.elements.map(e => e.value);
 
-                this.tempLabel.splice(0, this.tempLabel.length, ...data.elements.map(e => new Date(e.dateTime).toLocaleTimeString()))
+                this.tempLabel.splice(0, this.tempLabel.length, ...data.elements.map(e => datePipe.transform(e.dateTime)));
                 this.tempDatas = [ { data: temperature, label: 'Température' } ]
 
                 this.minTemp = temperature.reduce((previous, current) => previous < current ? previous : current);
@@ -112,7 +116,7 @@ export class PoolComponent implements OnInit, OnChanges {
             .subscribe(data => {
                 let level = data.elements.map(e => e.value);
 
-                this.levelLabel.splice(0, this.levelLabel.length, ...data.elements.map(e => new Date(e.dateTime).toLocaleTimeString()))
+                this.levelLabel.splice(0, this.levelLabel.length, ...data.elements.map(e => datePipe.transform(e.dateTime)))
                 this.levelDatas = [ { data: level, label: 'Niveau d\'eau' } ];
 
                 this.minLevel = level.reduce((previous, current) => previous < current ? previous : current);

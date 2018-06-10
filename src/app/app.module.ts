@@ -16,6 +16,7 @@ import { HomeComponent } from './components/home/home.component';
 import { RouterModule } from '@angular/router';
 import { HomeListComponent } from './components/home-list/home-list.componenet';
 import { PoolComponent } from './components/pool/pool.component';
+import { OwmApiService } from './services/weather.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { PoolComponent } from './components/pool/pool.component';
   ],
   providers: [
     PoseidonApiService,
+    OwmApiService,
     AppService,
     AuthenticationGuard,
     {
