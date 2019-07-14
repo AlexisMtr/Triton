@@ -1,0 +1,92 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="box setting-header">
+            <h1 class="">{{this.name}}</h1>
+            <span class="">INDISPONIBLE</span>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="settings">
+        <div class="col-md-6">
+            <div class="box row">
+                <div class="col-md-12 box-header with-border">
+                    <h3 class="box-title">Eau</h3>
+                </div>
+                <div class="col-md-12 setting-item">
+                    <span class="col-md-4">Niveau (m<sup>3</sup>)</span>
+                    <div class="field col-md-4">
+                        <span>Min.</span>
+                        <input type="number" [(ngModel)]="this.waterLevelMinValue" />
+                    </div>
+                    <div class="field col-md-4">
+                        <span>Max.</span>
+                        <input type="number" [(ngModel)]="this.waterLevelMaxValue" />
+                    </div>
+                </div>
+                <div class="col-md-12 setting-item">
+                    <span class="col-md-4">Température (°C)</span>
+                    <div class="field col-md-4">
+                        <span>Min.</span>
+                        <input type="number" [(ngModel)]="this.temperatureMinValue" />
+                    </div>
+                    <div class="field col-md-4">
+                        <span>Max.</span>
+                        <input type="number" [(ngModel)]="this.temperatureMaxValue" />
+                    </div>
+                </div>
+                <div class="col-md-12 setting-item">
+                    <span class="col-md-4">PH</span>
+                    <div class="field col-md-4">
+                        <span>Min.</span>
+                        <input type="number" min="1" max="9" [(ngModel)]="this.phMinValue" />
+                    </div>
+                    <div class="field col-md-4">
+                        <span>Max.</span>
+                        <input type="number" min="1" max="9" [(ngModel)]="this.phMaxValue" />
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="setting-button">
+                        <button class="btn btn-success btn-flat" (click)="updateConfiguration()"><i class="glyphicon glyphicon-ok"></i></button>
+                        <button class="btn btn-danger btn-flat" (click)="cancelUpdate()"><i class="glyphicon glyphicon-remove"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box row">
+                <div class="col-md-12 box-header with-border">
+                    <h3 class="box-title">Données</h3>
+                </div>
+                <div class="col-md-12 setting-item">
+                    <span class="col-md-6">Interval de récupération des données</span>
+                    <div class="field col-md-6">
+                        <input type="number" min="1" max="9" value="5" />
+                        <span>minute(s)</span>
+                    </div>
+                </div>
+                <div class="col-md-12 setting-item">
+                    <span class="col-md-6">Interval d'envoi des données</span>
+                    <div class="field col-md-6">
+                        <input type="number" min="1" max="9" value="15" />
+                        <span>minute(s)</span>
+                    </div>
+                </div>
+                <div class="col-md-12 setting-item">
+                    <span class="col-md-6">Attente avant renvoie des données</span>
+                    <div class="field col-md-6">
+                        <input type="number" min="1" max="9" value="15" />
+                        <span>minute(s)</span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="setting-button">
+                        <button class="btn btn-success btn-flat"><i class="glyphicon glyphicon-ok"></i></button>
+                        <button class="btn btn-danger btn-flat"><i class="glyphicon glyphicon-remove"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

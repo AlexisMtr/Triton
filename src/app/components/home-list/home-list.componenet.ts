@@ -25,4 +25,9 @@ export class HomeListComponent implements OnInit {
         console.log(id);
         this.router.navigate(['/pool', id]);
     }
+
+    public poolSettings(id: number): void {
+        console.log(id);
+        this.router.navigate(['/pool', id, 'settings']);
+    }
 }

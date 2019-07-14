@@ -1,0 +1,43 @@
+.settings input[type="number"] {
+	width: 50px;
+	border: none;
+	border-bottom: 1px solid black;
+	margin: 0px 10px;
+    font-family: Verdana;
+    text-align: end;
+    background-color: transparent;
+}
+
+.settings .field {
+    display: flex;
+    flex-direction: row
+}
+
+.setting-item {
+    padding: 10px;
+}
+
+.setting-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.setting-button > button {
+    margin: 5px;
+}
+
+.box {
+    padding-bottom: 5px;
+}
+
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.setting-header {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 10px 5px 10px;
+}

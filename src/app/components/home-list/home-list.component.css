@@ -1,3 +1,28 @@
 .pool-item {
     cursor: pointer;
 }
+
+.pool-settings {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    padding: 0px;
+}
+
+.pool-settings-item {
+    background-color: white;
+    padding: 10px;
+    margin: 0px 5px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+.row {
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.trash {
+    background-color: red;
+    color: white;
+}

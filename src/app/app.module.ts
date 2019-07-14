@@ -17,6 +17,7 @@ import { RouterModule } from '@angular/router';
 import { HomeListComponent } from './components/home-list/home-list.componenet';
 import { PoolComponent } from './components/pool/pool.component';
 import { OwmApiService } from './services/weather.service';
+import { PoolSettingsComponent } from './components/pool-settings/pool-settings.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { OwmApiService } from './services/weather.service';
     LoginComponent,
     HomeComponent,
     HomeListComponent,
-    PoolComponent
+    PoolComponent,
+    PoolSettingsComponent
   ],
   imports: [
     BrowserModule,

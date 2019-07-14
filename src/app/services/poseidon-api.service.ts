@@ -6,6 +6,7 @@ import { Telemetry, TelemetryType } from '../interfaces/telemetry';
 import { PaginatedElement } from '../interfaces/paginatedElement';
 import { Pool } from '../interfaces/pool';
 import { AppService } from './app.service';
+import { PoolConfiguration } from '../interfaces/poolConfiguration';
 
 
 export enum Method {
@@ -40,12 +41,12 @@ export class PoseidonApiService {
         this.appService.logout();
     }
 
-    public getPools(): Observable<PaginatedElement<Pool>> {
+    public getPools(): Observable<PaginatedElement<PoolConfiguration>> {
         let endPoint = this.baseUrl + '/pools';
         return this.httpRequest(Method.Get, endPoint, null, null);
     }
 
-    public getPool(poolId: number) : Observable<Pool> {
+    public getPool(poolId: number) : Observable<PoolConfiguration> {
         let endPoint = this.baseUrl + '/pools/' + poolId;
         return this.httpRequest(Method.Get, endPoint, null, null);
     }
@@ -71,6 +72,12 @@ export class PoseidonApiService {
         params = params.append('rowsPerPage', '999999');
 
         return this.httpRequest<PaginatedElement<Telemetry>>(Method.Get, endPoint, params, null);
+    }
+
+    public updateConfiguration(poolId: number, configuration: PoolConfiguration): Observable<PoolConfiguration> {
+        let endPoint = this.baseUrl + "/pools/" + poolId;
+        console.log('execute', configuration);
+        return this.httpRequest<PoolConfiguration>(Method.Put, endPoint, null, configuration);
     }
 
     private httpRequest<T>(method: Method, endpoint: string, params?: HttpParams, body?: any) : Observable<T> {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { PoseidonApiService } from '../../services/poseidon-api.service';
 import { Router } from '@angular/router';
 
