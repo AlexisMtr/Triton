@@ -1,58 +1,63 @@
-<div class="col-md-4 row" *ngFor="let pool of pools.elements">
-    <div class="info-box pool-item" (click)="poolSelected(pool.id)">
-        <span class="info-box-icon bg-aqua">
-            <i class="ion ion-waterdrop"></i>
-        </span>
+<div class="">
+    <div class="col-md-4 row" *ngFor="let pool of pools?.elements">
+        <div class="info-box pool-item" (click)="poolSelected(pool.id)">
+            <span class="info-box-icon bg-aqua">
+                <i class="ion ion-waterdrop"></i>
+            </span>
 
-        <div class="info-box-content">
-            <span class="info-box-number">{{pool.name}}</span>
-            <span class="info-box-text">Indisponible</span>
+            <div class="info-box-content">
+                <span class="info-box-number">{{pool.name}}</span>
+                <span class="info-box-text">Indisponible</span>
+            </div>
+        </div>
+        <div class="col-md-12 pool-settings">
+            <div class="pool-settings-item" (click)="poolSettings(pool.id)">
+                <span class="icon">
+                    <i class="glyphicon glyphicon-cog"></i>
+                </span>
+                <span>
+                    Paramètres
+                </span>
+            </div>
+            <div class="pool-settings-item" *ngIf="pool.deviceId === null" (click)="openAssociateModal(pool)">
+                <span class="icon">
+                    <i class="fa fa-chain"></i>
+                </span>
+                <span>
+                    Associer
+                </span>
+            </div>
+            <div class="pool-settings-item" *ngIf="pool.deviceId !== null" (click)="unlinkPool(pool)">
+                <span class="icon">
+                    <i class="fa fa-unlink"></i>
+                </span>
+                <span>
+                    Dissocier
+                </span>
+            </div>
+            <div class="pool-settings-item trash">
+                <span class="icon">
+                    <i class="glyphicon glyphicon-trash"></i>
+                </span>
+                <span>
+                    Supprimer
+                </span>
+            </div>
         </div>
     </div>
+    <div class="col-md-4 row">
+        <div class="info-box pool-item">
+            <span class="info-box-icon bg-green">
+                <i class="ion ion-plus"></i>
+            </span>
 
-    <div class="col-md-12 pool-settings">
-        <div class="pool-settings-item" (click)="poolSettings(pool.id)">
-            <span class="icon">
-                <i class="glyphicon glyphicon-cog"></i>
-            </span>
-            <span>
-                Paramètres
-            </span>
-        </div>
-        <div class="pool-settings-item" *ngIf="pool.deviceId !== null">
-            <span class="icon">
-                <i class="fa fa-chain"></i>
-            </span>
-            <span>
-                Associer
-            </span>
-        </div>
-        <div class="pool-settings-item">
-            <span class="icon">
-                <i class="fa fa-unlink"></i>
-            </span>
-            <span>
-                Dissocier
-            </span>
-        </div>
-        <div class="pool-settings-item trash">
-            <span class="icon">
-                <i class="glyphicon glyphicon-trash"></i>
-            </span>
-            <span>
-                Supprimer
-            </span>
+            <div class="info-box-content">
+                <span class="info-box-number">Nouvelle piscine</span>
+            </div>
         </div>
     </div>
 </div>
-<div class="col-md-4 row">
-    <div class="info-box pool-item">
-        <span class="info-box-icon bg-green">
-            <i class="ion ion-plus"></i>
-        </span>
-
-        <div class="info-box-content">
-            <span class="info-box-number">Nouvelle piscine</span>
-        </div>
-    </div>
-</div>
+<div class="blur" *ngIf="showModal"></div>
+<app-pool-associate class="home-popup" [pool]="currentPool" [devices]="availableDevices" [showModal]="showModal"
+    (canceled)="closeModal($event)" (done)="closeModal($event)">
+</app-pool-associate>

@@ -23,7 +23,7 @@ export class PoolSettingsComponent implements OnInit {
     phMaxValue: number;
     waterLevelMinValue: number;
     waterLevelMaxValue: number;
-    
+
     constructor(private apiService: PoseidonApiService, private route: ActivatedRoute) { }
 
     ngOnInit() {
@@ -63,7 +63,8 @@ export class PoolSettingsComponent implements OnInit {
             name: this.name,
             latitude: 0.00,
             longitude: 0.00,
-            id: this.poolId
+            id: this.poolId,
+            deviceId: this.pool.deviceId
         }).subscribe(data => this.deconstruct(data), err => console.log(err));
     }
 

@@ -21,7 +21,7 @@ export class PoseidonApiService {
 
     constructor(private http: HttpClient, private appService: AppService) { }
 
-    private baseUrl : string = "http://localhost:64705/api";
+    private baseUrl: string = "http://localhost:64705/api";
 
     public connect(login: string, password: string): Observable<any> {
         let endPoint = this.baseUrl + "/accounts/login";
@@ -46,7 +46,7 @@ export class PoseidonApiService {
         return this.httpRequest(Method.Get, endPoint, null, null);
     }
 
-    public getPool(poolId: number) : Observable<PoolConfiguration> {
+    public getPool(poolId: number): Observable<PoolConfiguration> {
         let endPoint = this.baseUrl + '/pools/' + poolId;
         return this.httpRequest(Method.Get, endPoint, null, null);
     }
@@ -60,13 +60,13 @@ export class PoseidonApiService {
         let endPoint = this.baseUrl + "/pools/" + poolId + "/telemetry/history";
         let params = new HttpParams();
 
-        if(type !== undefined) {
+        if (type !== undefined) {
             params = params.append('type', type.toString());
         }
-        if(before !== undefined) {
+        if (before !== undefined) {
             params = params.append('before', before.toISOString());
         }
-        if(after !== undefined) {
+        if (after !== undefined) {
             params = params.append('after', after.toISOString());
         }
         params = params.append('rowsPerPage', '999999');
@@ -80,24 +80,53 @@ export class PoseidonApiService {
         return this.httpRequest<PoolConfiguration>(Method.Put, endPoint, null, configuration);
     }
 
-    private httpRequest<T>(method: Method, endpoint: string, params?: HttpParams, body?: any) : Observable<T> {
-        
+    public unlinkPoolToDevice(poolId: number): Observable<boolean> {
+        let endpoint = this.baseUrl + '/pools/' + poolId + '/association';
+        return Observable.create(observer => {
+            this.httpRequest(Method.Delete, endpoint, null, null).subscribe(success => {
+                observer.next(true);
+            }, err => {
+                console.log('err', err);
+                observer.next(false);
+            });
+        });
+    }
+
+    public linkPoolToDevice(poolId: number, deviceId: string): Observable<boolean> {
+        let endpoint = this.baseUrl + '/pools/' + poolId + '/association/' + deviceId;
+        return Observable.create(observer => {
+            this.httpRequest(Method.Put, endpoint, null, null).subscribe(success => {
+                observer.next(true);
+            }, err => {
+                console.log('err', err);
+                observer.next(false);
+            });
+        });
+    }
+
+    public getAvailableDevices(): Observable<string[]> {
+        let endpoint = this.baseUrl + '/device';
+        return this.httpRequest(Method.Get, endpoint, null, null);
+    }
+
+    private httpRequest<T>(method: Method, endpoint: string, params?: HttpParams, body?: any): Observable<T> {
+
         let httpOptions = {
             headers: null,
             params: params
         };
-    
+
         return Observable.create(observer => {
-            if(method == Method.Get) {
+            if (method == Method.Get) {
                 this.http.get(endpoint, httpOptions).subscribe(data => observer.next(data));
             }
-            else if(method == Method.Post) {
+            else if (method == Method.Post) {
                 this.http.post(endpoint, body, httpOptions).subscribe(data => observer.next(data));
             }
-            else if(method == Method.Put) {
+            else if (method == Method.Put) {
                 this.http.put(endpoint, body, httpOptions).subscribe(data => observer.next(data));
             }
-            else if(method == Method.Delete) {
+            else if (method == Method.Delete) {
                 this.http.delete(endpoint, httpOptions).subscribe(data => observer.next(data));
             }
         });

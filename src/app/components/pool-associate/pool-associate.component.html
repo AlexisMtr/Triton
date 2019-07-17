@@ -1,0 +1,22 @@
+<div class="modal-dialog" *ngIf="showModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" aria-label="Close" type="button" data-dismiss="modal" (click)="cancel()">
+                <span aria-hidden="true">×</span>
+            </button>
+            <h4>Associer {{pool.name}}</h4>
+        </div>
+        <div class="modal-body">
+            <div>Selectionner un capteur</div>
+            <select [(ngModel)]="selectedDevice">
+                <option *ngFor="let id of devices">
+                    {{id}}
+                </option>
+            </select>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" data-dismiss="modal" (click)="cancel()">Fermer</button>
+            <button class="btn btn-primary" type="button" (click)="apply()">Appliquer</button>
+        </div>
+    </div>
+</div>

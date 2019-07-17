@@ -23,6 +23,19 @@
 }
 
 .trash {
-    background-color: red;
+    background-color: rgb(231, 43, 43);
     color: white;
+}
+
+.home-popup {
+    display: inline-flex;
+}
+
+.blur {
+    background-color: #eaeaead4;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0%;
+    left: 0%;
 }

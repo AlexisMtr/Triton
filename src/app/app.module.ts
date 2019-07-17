@@ -18,6 +18,8 @@ import { HomeListComponent } from './components/home-list/home-list.componenet';
 import { PoolComponent } from './components/pool/pool.component';
 import { OwmApiService } from './services/weather.service';
 import { PoolSettingsComponent } from './components/pool-settings/pool-settings.component';
+import { PoolAssociateComponent } from './components/pool-associate/pool-associate.compoenent';
+import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,9 @@ import { PoolSettingsComponent } from './components/pool-settings/pool-settings.
     HomeComponent,
     HomeListComponent,
     PoolComponent,
-    PoolSettingsComponent
+    PoolSettingsComponent,
+    PoolAssociateComponent,
+    ConfirmModalComponent
   ],
   imports: [
     BrowserModule,
