@@ -20,6 +20,9 @@ import { OwmApiService } from './services/weather.service';
 import { PoolSettingsComponent } from './components/pool-settings/pool-settings.component';
 import { PoolAssociateComponent } from './components/pool-associate/pool-associate.compoenent';
 import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.component';
+import { PoolCreationComponent } from './components/pool-creation/pool-creation.component';
+
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   declarations: [
@@ -30,7 +33,8 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     PoolComponent,
     PoolSettingsComponent,
     PoolAssociateComponent,
-    ConfirmModalComponent
+    ConfirmModalComponent,
+    PoolCreationComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +42,8 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
     HttpClientModule,
     FormsModule,
     ChartsModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    Ng5SliderModule
   ],
   providers: [
     PoseidonApiService,

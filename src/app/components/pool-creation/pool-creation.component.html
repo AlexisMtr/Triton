@@ -4,23 +4,20 @@
             <button class="close" aria-label="Close" type="button" data-dismiss="modal" (click)="cancel()">
                 <span aria-hidden="true">×</span>
             </button>
-            <h4><b>{{name}}</b></h4>Paramètres
+            <h4>Nouvelle piscine {{name}}</h4>
         </div>
         <div class="modal-body">
             <div class="form-group">
-                <label>Niveau:</label>
-                <ng5-slider [(value)]="waterLevelMinValue" [(highValue)]="waterLevelMaxValue" [options]="levelOptions">
-                </ng5-slider>
+                <label>Nom:</label>
+                <input type="text" class="form-control" [(ngModel)]="name" />
             </div>
             <div class="form-group">
-                <label>Température:</label>
-                <ng5-slider [(value)]="temperatureMinValue" [(highValue)]="temperatureMaxValue"
-                    [options]="temperatureOptions">
-                </ng5-slider>
+                <label>Latitude:</label>
+                <input type="text" class="form-control" [(ngModel)]="lat" />
             </div>
             <div class="form-group">
-                <label>ph:</label>
-                <ng5-slider [(value)]="phMinValue" [(highValue)]="phMaxValue" [options]="phOptions"></ng5-slider>
+                <label>Longitude:</label>
+                <input type="text" class="form-control" [(ngModel)]="lng" />
             </div>
         </div>
         <div class="modal-footer">

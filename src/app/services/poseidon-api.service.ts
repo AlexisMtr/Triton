@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgModuleFactoryLoader } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable } from 'rxjs/Observable';
 import { Token } from '../interfaces/token';
@@ -106,7 +106,32 @@ export class PoseidonApiService {
 
     public getAvailableDevices(): Observable<string[]> {
         let endpoint = this.baseUrl + '/device';
-        return this.httpRequest(Method.Get, endpoint, null, null);
+        let params = new HttpParams();
+        params = params.append("isAvailable", "true");
+        return this.httpRequest(Method.Get, endpoint, params, null);
+    }
+
+    public createPool(name: string, latitude: number, longitude: number): Observable<PoolConfiguration> {
+        let endpoint = this.baseUrl + '/pools';
+        let body = {
+            name: name,
+            latitude: latitude,
+            longitude: longitude
+        };
+
+        return this.httpRequest(Method.Post, endpoint, null, body);
+    }
+
+    public deletePool(poolId: number): Observable<boolean> {
+        let endpoint = this.baseUrl + '/pools/' + poolId;
+        return Observable.create(observer => {
+            this.httpRequest(Method.Delete, endpoint, null, null).subscribe(success => {
+                observer.next(true);
+            }, err => {
+                console.log('err', err);
+                observer.next(false);
+            });
+        });
     }
 
     private httpRequest<T>(method: Method, endpoint: string, params?: HttpParams, body?: any): Observable<T> {

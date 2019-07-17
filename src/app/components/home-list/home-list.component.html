@@ -11,7 +11,7 @@
             </div>
         </div>
         <div class="col-md-12 pool-settings">
-            <div class="pool-settings-item" (click)="poolSettings(pool.id)">
+            <div class="pool-settings-item" (click)="poolSettings(pool)">
                 <span class="icon">
                     <i class="glyphicon glyphicon-cog"></i>
                 </span>
@@ -35,7 +35,7 @@
                     Dissocier
                 </span>
             </div>
-            <div class="pool-settings-item trash">
+            <div class="pool-settings-item trash" (click)="deletePool(pool)">
                 <span class="icon">
                     <i class="glyphicon glyphicon-trash"></i>
                 </span>
@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="col-md-4 row">
-        <div class="info-box pool-item">
+        <div class="info-box pool-item" (click)="openCreationModal()">
             <span class="info-box-icon bg-green">
                 <i class="ion ion-plus"></i>
             </span>
@@ -57,7 +57,12 @@
         </div>
     </div>
 </div>
-<div class="blur" *ngIf="showModal"></div>
+<div class="blur" *ngIf="showModal || showCreationModal || showSettingsModal"></div>
 <app-pool-associate class="home-popup" [pool]="currentPool" [devices]="availableDevices" [showModal]="showModal"
     (canceled)="closeModal($event)" (done)="closeModal($event)">
 </app-pool-associate>
+<app-pool-creation class="home-popup" [showModal]="showCreationModal" (canceled)="closeCreationModal()"
+    (validate)="createPool($event)">
+</app-pool-creation>
+<app-pool-settings [pool]="currentPool" [showModal]="showSettingsModal" (canceled)="closeSettingsModal()"
+    (validate)="updatePoolSettings($event)"></app-pool-settings>

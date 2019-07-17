@@ -15,6 +15,8 @@ export class HomeListComponent implements OnInit {
     private currentPool: Pool;
     private availableDevices: string[];
     private showModal: boolean = false;
+    private showCreationModal: boolean = false;
+    private showSettingsModal: boolean = false;
 
     constructor(private apiService: PoseidonApiService, private router: Router) { }
 
@@ -37,9 +39,31 @@ export class HomeListComponent implements OnInit {
         this.currentPool = pool;
     }
 
-    public poolSettings(id: number): void {
-        console.log(id);
-        this.router.navigate(['/pool', id, 'settings']);
+    public poolSettings(pool: Pool): void {
+        this.currentPool = pool
+        this.showSettingsModal = true;
+    }
+
+    public updatePoolSettings(event: any): void {
+
+        this.apiService.updateConfiguration(this.currentPool.id, {
+            deviceId: this.currentPool.deviceId,
+            id: this.currentPool.id,
+            name: this.currentPool.name,
+            latitude: 0.00,
+            longitude: 0.00,
+            phMinValue: event.phMinValue,
+            phMaxValue: event.phMaxValue,
+            temperatureMinValue: event.temperatureMinValue,
+            temperatureMaxValue: event.temperatureMaxValue,
+            waterLevelMinValue: event.waterLevelMinValue,
+            waterLevelMaxValue: event.waterLevelMaxValue
+        }).subscribe(data => {
+            if (data !== null) {
+                this.showSettingsModal = false;
+                this.currentPool = null;
+            }
+        }, err => console.log(err));
     }
 
     public openAssociateModal(pool: Pool): void {
@@ -74,5 +98,34 @@ export class HomeListComponent implements OnInit {
                 this.availableDevices = data;
             }, err => console.log(err));
         }, err => console.log("my err", err));
+    }
+
+    public deletePool(pool: Pool): void {
+        this.apiService.deletePool(pool.id).subscribe(success => {
+            if (success) {
+                this.pools.elements = this.pools.elements.filter((value, _index, _arr) => {
+                    return value.id !== pool.id
+                });
+            }
+        }, err => console.log(err));
+    }
+
+    public openCreationModal(): void {
+        this.showCreationModal = true;
+    }
+
+    public closeCreationModal(): void {
+        this.showCreationModal = false;
+    }
+
+    public closeSettingsModal(): void {
+        this.showSettingsModal = false;
+    }
+
+    public createPool(pool: any): void {
+        this.apiService.createPool(pool.name, pool.latitude, pool.longitude).subscribe(pool => {
+            this.pools.elements.push(pool);
+            this.closeCreationModal();
+        }, err => console.log(err));
     }
 }

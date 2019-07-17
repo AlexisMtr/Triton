@@ -1,28 +1,51 @@
-import { Component, OnInit, NgModuleRef } from '@angular/core';
+import { Component, OnInit, NgModuleRef, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { PoseidonApiService } from '../../services/poseidon-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { Pool } from '../../interfaces/pool';
 import { PoolConfiguration } from '../../interfaces/poolConfiguration';
+import { Options } from 'ng5-slider';
 
 @Component({
     selector: 'app-pool-settings',
     templateUrl: './pool-settings.component.html',
-    styleUrls: ['./pool-settings.component.css']
+    styleUrls: ['./pool-settings.component.css', './pool-settings.component.scss']
 })
-export class PoolSettingsComponent implements OnInit {
+export class PoolSettingsComponent implements OnInit, OnChanges {
 
     private poolId: number;
-    private pool: PoolConfiguration;
+    @Input() pool: PoolConfiguration;
+    @Input() showModal: boolean;
+
+
+    @Output() validate: EventEmitter<any> = new EventEmitter<any>();
+    @Output() canceled: EventEmitter<any> = new EventEmitter<any>();
 
     name: string;
-    latitude: number;
-    longitude: number;
-    temperatureMinValue: number;
-    temperatureMaxValue: number;
-    phMinValue: number;
-    phMaxValue: number;
-    waterLevelMinValue: number;
-    waterLevelMaxValue: number;
+    temperatureMinValue: number = 0;
+    temperatureMaxValue: number = 0;
+    phMinValue: number = 0;
+    phMaxValue: number = 0;
+    waterLevelMinValue: number = 0;
+    waterLevelMaxValue: number = 0;
+
+    temperatureOptions: Options = {
+        floor: -5,
+        ceil: 40,
+        animate: false,
+        noSwitching: true
+    };
+    levelOptions: Options = {
+        floor: 0,
+        ceil: 150,
+        animate: false,
+        noSwitching: true
+    };
+    phOptions: Options = {
+        floor: 1,
+        ceil: 9,
+        animate: false,
+        noSwitching: true
+    };
 
     constructor(private apiService: PoseidonApiService, private route: ActivatedRoute) { }
 
@@ -35,6 +58,18 @@ export class PoolSettingsComponent implements OnInit {
         }, err => console.log(err));
     }
 
+
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log(changes.pool !== undefined && changes.pool.firstChange === false);
+        if (changes.pool !== undefined) {
+            this.apiService.getPool(changes.pool.currentValue.id).subscribe(data => {
+                console.log(data);
+                this.pool = data;
+                this.deconstruct(data);
+            }, err => console.log(err));
+        }
+    }
+
     private deconstruct(pool: PoolConfiguration): void {
         this.name = pool.name;
         this.phMaxValue = pool.phMaxValue;
@@ -43,29 +78,21 @@ export class PoolSettingsComponent implements OnInit {
         this.waterLevelMinValue = pool.waterLevelMinValue;
         this.temperatureMaxValue = pool.temperatureMaxValue;
         this.temperatureMinValue = pool.temperatureMinValue;
-        this.latitude = pool.latitude;
-        this.longitude = pool.longitude;
     }
 
-    public cancelUpdate(): void {
-        this.deconstruct(this.pool);
+    public cancel(): void {
+        this.canceled.emit();
     }
 
-    public updateConfiguration(): void {
-        console.log("update");
-        this.apiService.updateConfiguration(this.poolId, {
+    public apply(): void {
+        this.validate.emit({
             waterLevelMaxValue: this.waterLevelMaxValue,
             waterLevelMinValue: this.waterLevelMinValue,
             phMaxValue: this.phMaxValue,
             phMinValue: this.phMinValue,
             temperatureMaxValue: this.temperatureMaxValue,
             temperatureMinValue: this.temperatureMinValue,
-            name: this.name,
-            latitude: 0.00,
-            longitude: 0.00,
-            id: this.poolId,
-            deviceId: this.pool.deviceId
-        }).subscribe(data => this.deconstruct(data), err => console.log(err));
+        });
     }
 
 }
