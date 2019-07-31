@@ -49,7 +49,8 @@ export class PoolSettingsComponent implements OnChanges {
     constructor(private apiService: PoseidonApiService, private route: ActivatedRoute) { }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.pool !== undefined) {
+        console.log(changes);
+        if (this.isPoolChangesDefined(changes)) {
             this.isBusy = true;
             this.apiService.getPool(changes.pool.currentValue.id).subscribe(data => {
                 console.log(data);
@@ -84,6 +85,10 @@ export class PoolSettingsComponent implements OnChanges {
             temperatureMaxValue: this.temperatureMaxValue,
             temperatureMinValue: this.temperatureMinValue,
         });
+    }
+
+    private isPoolChangesDefined(poolChanges: SimpleChanges): boolean {
+        return poolChanges.pool !== undefined && poolChanges.pool.currentValue !== undefined && poolChanges.pool.currentValue !== null
     }
 
 }

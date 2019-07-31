@@ -14,7 +14,7 @@ export class HomeListComponent implements OnInit {
     private pools: PaginatedElement<Pool>;
     private currentPool: Pool;
     private availableDevices: string[];
-    private showModal: boolean = false;
+    private showDeviceModal: boolean = false;
     private showCreationModal: boolean = false;
     private showSettingsModal: boolean = false;
 
@@ -68,13 +68,14 @@ export class HomeListComponent implements OnInit {
 
     public openAssociateModal(pool: Pool): void {
         this.currentPool = pool;
-        this.showModal = pool !== null;
+        this.showDeviceModal = pool !== null;
     }
 
     public closeModal(event: any): void {
         if (event.done && event.device !== null) {
+            console.log(event);
             this.apiService.linkPoolToDevice(this.currentPool.id, event.device).subscribe(success => {
-                this.showModal = false;
+                this.showDeviceModal = false;
                 if (success) {
                     this.pools.elements.filter(e => e.id === this.currentPool.id)[0].deviceId = event.device;
                     this.availableDevices = this.availableDevices.filter((value, _index, _arr) => {
@@ -84,7 +85,7 @@ export class HomeListComponent implements OnInit {
                 this.currentPool = null;
             }, err => console.log(err));
         } else {
-            this.showModal = false;
+            this.showDeviceModal = false;
             this.currentPool = null;
         }
     }

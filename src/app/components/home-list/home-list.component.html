@@ -57,8 +57,8 @@
         </div>
     </div>
 </div>
-<div class="blur" *ngIf="showModal || showCreationModal || showSettingsModal"></div>
-<app-pool-associate class="home-popup" [pool]="currentPool" [devices]="availableDevices" [showModal]="showModal"
+<div class="blur" *ngIf="showDeviceModal || showCreationModal || showSettingsModal"></div>
+<app-pool-associate class="home-popup" [pool]="currentPool" [devices]="availableDevices" [showModal]="showDeviceModal"
     (canceled)="closeModal($event)" (done)="closeModal($event)">
 </app-pool-associate>
 <app-pool-creation class="home-popup" [showModal]="showCreationModal" (canceled)="closeCreationModal()"
