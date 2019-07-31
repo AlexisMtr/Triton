@@ -1,4 +1,4 @@
-import { Component, OnInit, NgModuleRef, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { PoseidonApiService } from '../../services/poseidon-api.service';
 import { ActivatedRoute } from '@angular/router';
 import { PoolConfiguration } from '../../interfaces/poolConfiguration';
@@ -9,15 +9,15 @@ import { Options } from 'ng5-slider';
     templateUrl: './pool-settings.component.html',
     styleUrls: ['./pool-settings.component.css', './pool-settings.component.scss']
 })
-export class PoolSettingsComponent implements OnInit, OnChanges {
+export class PoolSettingsComponent implements OnChanges {
 
-    private poolId: number;
     @Input() pool: PoolConfiguration;
     @Input() showModal: boolean;
 
-
     @Output() validate: EventEmitter<any> = new EventEmitter<any>();
     @Output() canceled: EventEmitter<any> = new EventEmitter<any>();
+
+    private isBusy: boolean = false;
 
     name: string;
     temperatureMinValue: number = 0;
@@ -48,23 +48,14 @@ export class PoolSettingsComponent implements OnInit, OnChanges {
 
     constructor(private apiService: PoseidonApiService, private route: ActivatedRoute) { }
 
-    ngOnInit() {
-        this.poolId = this.route.snapshot.params['id'];
-        this.apiService.getPool(this.poolId).subscribe(data => {
-            console.log(data);
-            this.pool = data;
-            this.deconstruct(data);
-        }, err => console.log(err));
-    }
-
-
     ngOnChanges(changes: SimpleChanges): void {
-        console.log(changes.pool !== undefined && changes.pool.firstChange === false);
         if (changes.pool !== undefined) {
+            this.isBusy = true;
             this.apiService.getPool(changes.pool.currentValue.id).subscribe(data => {
                 console.log(data);
                 this.pool = data;
                 this.deconstruct(data);
+                this.isBusy = false;
             }, err => console.log(err));
         }
     }
@@ -80,6 +71,7 @@ export class PoolSettingsComponent implements OnInit, OnChanges {
     }
 
     public cancel(): void {
+        this.deconstruct(this.pool);
         this.canceled.emit();
     }
 

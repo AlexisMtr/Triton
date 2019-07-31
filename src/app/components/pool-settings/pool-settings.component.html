@@ -1,5 +1,5 @@
 <div class="modal-dialog" *ngIf="showModal">
-    <div class="modal-content">
+    <div class="modal-content" *ngIf="!isBusy">
         <div class="modal-header">
             <button class="close" aria-label="Close" type="button" data-dismiss="modal" (click)="cancel()">
                 <span aria-hidden="true">×</span>
@@ -25,7 +25,19 @@
         </div>
         <div class="modal-footer">
             <button class="btn btn-default" type="button" data-dismiss="modal" (click)="cancel()">Annuler</button>
-            <button class="btn btn-primary" type="button" (click)="apply()">Créer</button>
+            <button class="btn btn-primary" type="button" (click)="apply()">Valider</button>
+        </div>
+    </div>
+    <div class="modal-content" *ngIf="isBusy">
+        <div class="modal-header">
+            <button class="close" aria-label="Close" type="button" data-dismiss="modal" (click)="cancel()">
+                <span aria-hidden="true">×</span>
+            </button>
+            <h4><b>Loading ...</b></h4>Paramètres
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
         </div>
     </div>
 </div>
