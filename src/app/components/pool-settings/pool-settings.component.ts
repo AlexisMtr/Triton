@@ -1,7 +1,6 @@
 import { Component, OnInit, NgModuleRef, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { PoseidonApiService } from '../../services/poseidon-api.service';
 import { ActivatedRoute } from '@angular/router';
-import { Pool } from '../../interfaces/pool';
 import { PoolConfiguration } from '../../interfaces/poolConfiguration';
 import { Options } from 'ng5-slider';
 
