@@ -23,6 +23,7 @@ import { ConfirmModalComponent } from './components/confirm-modal/confirm-modal.
 import { PoolCreationComponent } from './components/pool-creation/pool-creation.component';
 
 import { Ng5SliderModule } from 'ng5-slider';
+import { DeviceSettingsComponent } from './components/device-settings/device-settings.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { Ng5SliderModule } from 'ng5-slider';
     PoolSettingsComponent,
     PoolAssociateComponent,
     ConfirmModalComponent,
-    PoolCreationComponent
+    PoolCreationComponent,
+    DeviceSettingsComponent
   ],
   imports: [
     BrowserModule,

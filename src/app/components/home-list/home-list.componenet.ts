@@ -17,6 +17,7 @@ export class HomeListComponent implements OnInit {
     private showDeviceModal: boolean = false;
     private showCreationModal: boolean = false;
     private showSettingsModal: boolean = false;
+    private showTimerModal: boolean = false;
 
     constructor(private apiService: PoseidonApiService, private router: Router) { }
 
@@ -127,6 +128,22 @@ export class HomeListComponent implements OnInit {
         this.apiService.createPool(pool.name, pool.latitude, pool.longitude).subscribe(pool => {
             this.pools.elements.push(pool);
             this.closeCreationModal();
+        }, err => console.log(err));
+    }
+
+    public openTimerModal(pool: Pool): void {
+        this.currentPool = pool;
+        this.showTimerModal = true;
+    }
+
+    public closeTimerModal(): void {
+        this.showTimerModal = false;
+    }
+
+    public updateDeviceConfiguration(deviceSettings: any): void {
+        console.log(deviceSettings);
+        this.apiService.updateDeviceConfiguration(deviceSettings.deviceId, deviceSettings.configuration).subscribe(success => {
+            this.closeTimerModal();
         }, err => console.log(err));
     }
 }

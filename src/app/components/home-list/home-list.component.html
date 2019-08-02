@@ -35,6 +35,14 @@
                     Dissocier
                 </span>
             </div>
+            <div class="pool-settings-item" *ngIf="pool.deviceId !== null" (click)="openTimerModal(pool)">
+                <span class="icon">
+                    <i class="fa fa-heartbeat"></i>
+                </span>
+                <span>
+                    Timer
+                </span>
+            </div>
             <div class="pool-settings-item trash" (click)="deletePool(pool)">
                 <span class="icon">
                     <i class="glyphicon glyphicon-trash"></i>
@@ -57,7 +65,7 @@
         </div>
     </div>
 </div>
-<div class="blur" *ngIf="showDeviceModal || showCreationModal || showSettingsModal"></div>
+<div class="blur" *ngIf="showDeviceModal || showCreationModal || showSettingsModal || showTimerModal"></div>
 <app-pool-associate class="home-popup" [pool]="currentPool" [devices]="availableDevices" [showModal]="showDeviceModal"
     (canceled)="closeModal($event)" (done)="closeModal($event)">
 </app-pool-associate>
@@ -66,3 +74,6 @@
 </app-pool-creation>
 <app-pool-settings [pool]="currentPool" [showModal]="showSettingsModal" (canceled)="closeSettingsModal()"
     (validate)="updatePoolSettings($event)"></app-pool-settings>
+<app-device-settings [pool]="currentPool" [showModal]="showTimerModal" (canceled)="closeTimerModal()"
+    (validate)="updateDeviceConfiguration($event)">
+</app-device-settings>

@@ -7,6 +7,7 @@ import { PaginatedElement } from '../interfaces/paginatedElement';
 import { Pool } from '../interfaces/pool';
 import { AppService } from './app.service';
 import { PoolConfiguration } from '../interfaces/poolConfiguration';
+import { DeviceConfiguration } from '../interfaces/deviceConfiguration';
 
 
 export enum Method {
@@ -126,6 +127,24 @@ export class PoseidonApiService {
         let endpoint = this.baseUrl + '/pools/' + poolId;
         return Observable.create(observer => {
             this.httpRequest(Method.Delete, endpoint, null, null).subscribe(success => {
+                observer.next(true);
+            }, err => {
+                console.log('err', err);
+                observer.next(false);
+            });
+        });
+    }
+
+    public getDeviceConfiguration(deviceId: string): Observable<DeviceConfiguration> {
+        let endpoint = this.baseUrl + '/device/' + deviceId + '/configuration';
+
+        return this.httpRequest<DeviceConfiguration>(Method.Get, endpoint, null, null);
+    }
+
+    public updateDeviceConfiguration(deviceId: string, configuration: DeviceConfiguration): Observable<boolean> {
+        let endpoint = this.baseUrl + '/device/' + deviceId;
+        return Observable.create(observer => {
+            this.httpRequest(Method.Put, endpoint, null, configuration).subscribe(success => {
                 observer.next(true);
             }, err => {
                 console.log('err', err);
