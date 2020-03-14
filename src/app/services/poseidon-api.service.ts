@@ -8,6 +8,7 @@ import { Pool } from '../interfaces/pool';
 import { AppService } from './app.service';
 import { PoolConfiguration } from '../interfaces/poolConfiguration';
 import { DeviceConfiguration } from '../interfaces/deviceConfiguration';
+import { environment } from '../../environments/environment';
 
 
 export enum Method {
@@ -22,7 +23,7 @@ export class PoseidonApiService {
 
     constructor(private http: HttpClient, private appService: AppService) { }
 
-    private baseUrl: string = "http://localhost:64705/api";
+    private baseUrl: string = environment.backendUri;
 
     public connect(login: string, password: string): Observable<any> {
         let endPoint = this.baseUrl + "/accounts/login";
