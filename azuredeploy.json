@@ -1,0 +1,117 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.1.0.3",
+	"parameters": {
+    "env": {
+      "type": "string",
+      "defaultValue": "dev",
+      "allowedValues": [
+        "dev",
+        "qa",
+        "prod"
+      ]
+    },
+		"storage-account-name": {
+			"defaultValue": "tritonsto",
+			"type": "string"
+		},
+		"cdn-profile-name": {
+			"defaultValue": "cdn-profile-triton",
+			"type": "string"
+		},
+		"cdn-endpoint-name": {
+			"defaultValue": "cdn-endpoint-triton",
+			"type": "string"
+		}
+	},
+	"variables": {
+		"storage-resource-name": "[concat(parameters('env'), parameters('storage-account-name'))]",
+		"cdn-profile-resource-name": "[concat(parameters('env'), '-', parameters('cdn-profile-name'))]",
+		"cdn-endpoint-resource-name": "[concat(variables('cdn-profile-resource-name'), '/', parameters('cdn-endpoint-name'))]",
+		"cdn-endpoint-origin": "[concat(parameters('storage-account-name'), 'web.core.windows.net/$web/')]"
+	},
+	"resources": [
+		{
+			"type": "Microsoft.Cdn/profiles",
+			"sku": {
+				"name": "Standard_Verizon"
+			},
+			"name": "[variables('cdn-profile-resource-name')]",
+			"apiVersion": "2016-04-02",
+			"location": "[resourceGroup().location]",
+			"tags": {},
+			"scale": null,
+			"properties": {
+				"provisioningState": "Succeeded",
+				"resourceState": "Active"
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Storage/storageAccounts', variables('storage-resource-name'))]"
+			]
+		},
+		{
+			"type": "Microsoft.Storage/storageAccounts",
+			"sku": {
+				"name": "Standard_LRS",
+				"tier": "Standard"
+			},
+			"kind": "StorageV2",
+			"name": "[variables('storage-resource-name')]",
+			"apiVersion": "2018-07-01",
+			"location": "[resourceGroup().location]",
+			"tags": {},
+			"scale": null,
+			"properties": {
+				"networkAcls": {
+					"bypass": "AzureServices",
+					"virtualNetworkRules": [],
+					"ipRules": [],
+					"defaultAction": "Allow"
+				},
+				"supportsHttpsTrafficOnly": true,
+				"encryption": {
+					"services": {
+						"file": {
+							"enabled": true
+						},
+						"blob": {
+							"enabled": true
+						}
+					},
+					"keySource": "Microsoft.Storage"
+				},
+				"accessTier": "Hot"
+			},
+			"dependsOn": []
+		},
+		{
+			"type": "Microsoft.Cdn/profiles/endpoints",
+			"name": "[variables('cdn-endpoint-resource-name')]",
+			"apiVersion": "2016-04-02",
+			"location": "[resourceGroup().location]",
+			"tags": {},
+			"properties": {
+				"originHostHeader": "[variables('cdn-endpoint-origin')]",
+				"isHttpAllowed": true,
+				"isHttpsAllowed": true,
+				"queryStringCachingBehavior": "IgnoreQueryString",
+				"originPath": null,
+				"origins": [
+					{
+						"name": "[concat(variables('cdn-endpoint-resource-name'), '-origin')]",
+						"properties": {
+							"hostName": "[variables('cdn-endpoint-origin')]",
+							"httpPort": 80,
+							"httpsPort": 443
+						}
+					}
+				],
+				"contentTypesToCompress": [],
+				"isCompressionEnabled": false
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Cdn/profiles', variables('cdn-profile-resource-name'))]"
+			]
+		}
+	]
+}
