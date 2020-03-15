@@ -28,7 +28,7 @@
 		"storage-resource-name": "[concat(parameters('env'), parameters('storage-account-name'))]",
 		"cdn-profile-resource-name": "[concat(parameters('env'), '-', parameters('cdn-profile-name'))]",
 		"cdn-endpoint-resource-name": "[concat(variables('cdn-profile-resource-name'), '/', parameters('cdn-endpoint-name'))]",
-		"cdn-endpoint-origin": "[concat(parameters('storage-account-name'), 'web.core.windows.net/$web/')]"
+		"cdn-endpoint-origin": "[concat('https://', parameters('storage-account-name'), '.z16.web.core.windows.net')]"
 	},
 	"resources": [
 		{
