@@ -1,0 +1,73 @@
+parameters:
+  deploymentName: ''
+  deploymentDisplayName: ''
+  env: ''
+  storageResourceName: ''
+  azureSubscription: ''
+  variableGroup: ''
+
+jobs:
+- deployment: ${{ parameters.deploymentName }}
+  displayName: ${{ parameters.deploymentDisplayName }}
+  environment: ${{ parameters.env }}
+  variables:
+  - group: ${{ parameters.variableGroup }}
+  strategy:
+    runOnce:
+      preDeploy:
+        steps:
+        - task: replacetokens@3
+          name: ${{ parameters.env }}_replace_back_uri
+          displayName: Update Backend URI
+          inputs:
+            rootDirectory: '$(Pipeline.Workspace)/triton'
+            targetFiles: '**/*.js'
+            encoding: 'auto'
+            writeBOM: true
+            actionOnMissing: 'fail'
+            keepToken: false
+            tokenPrefix: '#{'
+            tokenSuffix: '}#'
+        - task: AzureResourceManagerTemplateDeployment@3
+          displayName: ${{ parameters.deploymentDisplayName }}
+          name: ${{ parameters.deploymentName }}
+          inputs:
+            action: Create Or Update Resource Group
+            deploymentMode: Incremental
+            deploymentScope: Resource Group
+            azureResourceManagerConnection: ${{ parameters.azureSubscription }}
+            templateLocation: Linked artifact
+            resourceGroupName: ${{ parameters.azureResourceGroup }}
+            csmFile: $(Pipeline.Workspace)/azure/azuredeploy.json
+            csmParametersFile: $(Pipeline.Workspace)/azure/azuredeploy.parameters.json
+            overrideParameters: '-env $(azure_env)'
+            deploymentOutputs: armOutputs
+        - template: tools/parse-arm-outpus.yml
+          parameters:
+            armOutputs: $(armOutputs)
+        - task: AzureCLI@2
+          name: ${{ parameters.env }}_enable_static_website
+          displayName: Enable Static WebSite on StorageAccount
+          inputs:
+            azureSubscription: ${{ parameters.azureSubscription }}
+            scriptType: bash
+            scriptLocation: inlineScript
+            inlineScript: |
+              az storage blob service-properties update \
+                -g $(resource_group) \
+                --account-name $(storage_resource_name) \
+                --static-website true \
+                --index-document index.html \
+                --404-document index.html
+      deploy:
+        steps:
+        - task: AzureFileCopy@3
+          displayName: Copy Triton to StorageAccount
+          name: ${{ parameters.env }}_copy_dist
+          inputs:
+            azureSubscription: ${{ parameters.azureSubscription }}
+            ContainerName: $web
+            CleanTargetBeforeCopy: true
+            resourceGroup: $(resource_group)
+            Destination: AzureBlob
+            storage: $(storage_resource_name)

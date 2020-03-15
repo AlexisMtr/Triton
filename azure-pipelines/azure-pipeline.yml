@@ -44,6 +44,14 @@ stages:
         artifact: nginx
         publishLocation: pipeline
         targetPath: nginx.conf
+    - task: PublishPipelineArtifact@1
+      name: publish_build_azuredeploy
+      displayName: Publish ARM Template
+      condition: always()
+      inputs:
+        artifact: azure
+        publishLocation: pipeline
+        targetPath: azure
 
 - stage: deploy_dev
   displayName: Deploy DEV

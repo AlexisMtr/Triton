@@ -1,0 +1,63 @@
+parameters:
+  deploymentName: ''
+  deploymentDisplayName: ''
+  env: ''
+  tags: ''
+  nginxConf: ''
+  workingDirectory: ''
+
+jobs:
+- deployment: ${{ parameters.deploymentName }}
+  displayName: ${{ parameters.deploymentDisplayName }}
+  environment:
+    name: ${{ parameters.env }}
+    resourceType: VirtualMachine
+    tags: ${{ parameters.tags }}
+  variables:
+  - name: nginx_conf
+    value: ${{ parameters.nginxConf }}
+  strategy:
+    runOnce:
+      deploy:
+        steps:
+        - task: replacetokens@3
+          name: ${{ parameters.env }}_replace_nginx_conf
+          displayName: Update NGINX Conf
+          inputs:
+            rootDirectory: '$(Pipeline.Workspace)/nginx'
+            targetFiles: '*.conf'
+            encoding: 'auto'
+            writeBOM: true
+            actionOnMissing: 'fail'
+            keepToken: false
+            tokenPrefix: '#{'
+            tokenSuffix: '}#'
+        - task: Bash@3
+          name: ${{ parameters.env }}_update_nginx_conf
+          displayName: Update NGINX
+          continueOnError: true
+          inputs:
+            script: |
+              cp $(Pipeline.Workspace)/nginx/nginx.conf $NGINX_CONF
+              ln -sfn $NGINX_CONF /etc/nginx/sites-enabled/triton
+              sudo nginx -s reload
+            targetType: inline
+        - task: replacetokens@3
+          name: ${{ parameters.env }}_replace_back_uri
+          displayName: Update Backend URI
+          inputs:
+            rootDirectory: '$(Pipeline.Workspace)/triton'
+            targetFiles: '**/*.js'
+            encoding: 'auto'
+            writeBOM: true
+            actionOnMissing: 'fail'
+            keepToken: false
+            tokenPrefix: '#{'
+            tokenSuffix: '}#'
+        - task: CopyFiles@2
+          displayName: Copy Triton to www
+          name: ${{ parameters.env }}_copy_dist_www
+          inputs:
+            CleanTargetFolder: true
+            TargetFolder: ${{ parameters.workingDirectory }}/www
+            SourceFolder: $(Pipeline.Workspace)/triton

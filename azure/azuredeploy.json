@@ -113,5 +113,15 @@
 				"[resourceId('Microsoft.Cdn/profiles', variables('cdn-profile-resource-name'))]"
 			]
 		}
-	]
+	],
+	"outputs": {
+		"storage_resource_name": {
+			"type": "string",
+			"value": "[variables('storage-resource-name')]"
+		},
+		"resource_group": {
+			"type": "string",
+			"value": "[resourceGroup().name]"
+		}
+	}
 }
