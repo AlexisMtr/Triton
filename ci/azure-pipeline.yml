@@ -50,7 +50,7 @@ stages:
   variables:
   - name: workDir
     value: $(app.location)
-  - name: nginx_conf
+  - name: nginx_filePath
     value: /etc/nginx/sites-available/triton
   - group: triton_dev
   jobs:
@@ -61,14 +61,14 @@ stages:
       env: DEV
       tags: azurevm
       workingDirectory: $(workDir)
-      nginxConf: $(nginx_conf)
+      nginxConf: $(nginx_filePath)
       
 - stage: deploy_qa
   displayName: Deploy QA
   variables:
   - name: workDir
     value: $(app.location)
-  - name: nginx_conf
+  - name: nginx_filePath
     value: /etc/nginx/sites-available/triton
   - group: triton_qa
   jobs:
@@ -79,16 +79,16 @@ stages:
       env: QA
       tags: azurevm
       workingDirectory: $(workDir)
-      nginxConf: $(nginx_conf)
+      nginxConf: $(nginx_filePath)
       
 - stage: deploy_prod
   displayName: Deploy PROD
   variables:
   - name: workDir
     value: $(app.location)
-  - name: nginx_conf
+  - name: nginx_filePath
     value: /etc/nginx/sites-available/triton
-  - group: triton_qa
+  - group: triton_prod
   jobs:
   - template: deployment_onprem.template.yml
     parameters:
@@ -97,4 +97,4 @@ stages:
       env: PROD
       tags: azurevm
       workingDirectory: $(workDir)
-      nginxConf: $(nginx_conf)
+      nginxConf: $(nginx_filePath)
