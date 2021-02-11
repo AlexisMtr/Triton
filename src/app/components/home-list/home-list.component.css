@@ -2,6 +2,11 @@
     cursor: pointer;
 }
 
+.info-box {
+    color: white;
+    background-color: #7d7d7d;
+}
+
 .pool-settings {
     display: flex;
     flex-direction: row;
@@ -10,16 +15,19 @@
 }
 
 .pool-settings-item {
-    background-color: white;
+    /* background-color: white; */
     padding: 10px;
     margin: 0px 5px;
     box-shadow: 0 1px 1px rgba(0,0,0,0.1);
     cursor: pointer;
     margin-bottom: 15px;
+    color: white;
+    background-color: #7d7d7d;
 }
 .row {
     margin-left: 0px;
     margin-right: 0px;
+    margin-bottom: 15px;
 }
 
 .trash {
@@ -32,7 +40,7 @@
 }
 
 .blur {
-    background-color: #eaeaead4;
+    background-color: #888888bf;
     height: 100%;
     width: 100%;
     position: absolute;

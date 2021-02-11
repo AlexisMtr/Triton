@@ -41,7 +41,7 @@ export class PoolSettingsComponent implements OnChanges {
     };
     phOptions: Options = {
         floor: 1,
-        ceil: 9,
+        ceil: 14,
         animate: false,
         noSwitching: true
     };
