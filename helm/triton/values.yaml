@@ -40,6 +40,9 @@ service:
   type: ClusterIP
   port: 80
 
+api:
+  url: http://localhost/api
+
 ingress:
   enabled: true
   annotations:
