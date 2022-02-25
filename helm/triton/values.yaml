@@ -54,10 +54,7 @@ ingress:
   - host: poseidon.alexismtr.fr
     paths:
       path: /
-  tls:
-  - hosts: 
-    - poseidon.alexismtr.fr
-    secretName: www-poseidon-cert
+  tls: []
 
 resources:
   # We usually recommend not to specify default resources and to leave this as a conscious
